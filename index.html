@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DTA VISUALIZATION</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ecbde7;
+           
+        }
+
+        header {
+            background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            width: 70%;
+            margin: auto;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons a {
+            margin: 0 10px;
+        }
+
+        .engagement-result {
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+     <marquee>  <h1><i>.ANALYZE YOUR INSTAGRAM ACCOUNT..ANALYZE YOUR INSTAGRAM ACCOUNT..ANALYZE YOUR INSTAGRAM ACCOUNT..ANALYZE YOUR INSTAGRAM ACCOUNT..ANALYZE YOUR INSTAGRAM ACCOUNT..ANALYZE YOUR INSTAGRAM ACCOUNT..ANALYZE YOUR INSTAGRAM ACCOUNT..ANALYZE YOUR INSTAGRAM ACCOUNT..ANALYZE YOUR INSTAGRAM ACCOUNT.</h1></marquee> 
+    </header>
+
+    <main class="container">
+        <div class="input-container my-4">
+            <h2>Enter Your Engagement Data:</h2>
+            <div class="mb-3">
+                <label for="followers" class="form-label">Number of Followers:</label>
+                <input type="number" class="form-control" id="followers" placeholder="e.g., 5000">
+            </div>
+            <div class="mb-3">
+                <label for="comments" class="form-label">Number of Comments:</label>
+                <input type="number" class="form-control" id="comments" placeholder="e.g., 50">
+            </div>
+            <div class="mb-3">
+                <label for="likes" class="form-label">Number of Likes:</label>
+                <input type="number" class="form-control" id="likes" placeholder="e.g., 150">
+            </div>
+            <div class="mb-3">
+                <label for="shares" class="form-label">Number of Shares:</label>
+                <input type="number" class="form-control" id="shares" placeholder="e.g., 20">
+            </div>
+            <div class="mb-3">
+                <label for="views" class="form-label">Number of Views:</label>
+                <input type="number" class="form-control" id="views" placeholder="e.g., 1000">
+            </div>
+            <button class="btn btn-primary" onclick="updateCharts()">Update Charts & Analyze</button>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="engagementChart"></canvas>
+        </div>
+
+        <div id="engagementResult" class="engagement-result"></div>
+
+        <div class="buttons">
+            <a href="#" class="btn btn-success">Home</a>
+            <a href="#" class="btn btn-warning">About</a>
+            <a href="#" class="btn btn-info">Contact</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Analyze Your Data Through Graphs</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize chart with default data
+        const engagementCtx = document.getElementById('engagementChart').getContext('2d');
+
+        let engagementChart = new Chart(engagementCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Comments', 'Likes', 'Shares', 'Views'],
+                datasets: [{
+                    label: 'Engagement',
+                    data: [50, 150, 20, 1000],
+                    backgroundColor: [
+                        '#833ab4', // Instagram purple
+                        '#fd1d1d', // Instagram red
+                        '#fcb045', // Instagram orange
+                        '#28a745'  // Green for Views
+                    ],
+                }]
+            }
+        });
+
+        // Update chart and analyze engagement
+        function updateCharts() {
+            const followers = parseInt(document.getElementById('followers').value) || 0;
+            const comments = parseInt(document.getElementById('comments').value) || 0;
+            const likes = parseInt(document.getElementById('likes').value) || 0;
+            const shares = parseInt(document.getElementById('shares').value) || 0;
+            const views = parseInt(document.getElementById('views').value) || 0;
+
+            const totalEngagement = comments + likes + shares + views;
+            const engagementRate = (totalEngagement / followers) * 100;
+
+            let resultText = '';
+
+            if (engagementRate > 70) {
+                resultText = 'Congratulations!';
+            } else if (engagementRate > 50) {
+                resultText = 'Trending';
+            } else if (engagementRate > 33) {
+                resultText = 'Trending Regionally';
+            } else {
+                resultText = 'Engaging';
+            }
+
+            document.getElementById('engagementResult').innerText = `Engagement Analysis: ${resultText} (${engagementRate.toFixed(2)}%)`;
+
+            engagementChart.data.datasets[0].data = [comments, likes, shares, views];
+            engagementChart.update();
+        }
+    </script>
+
+</body>
+</html>
